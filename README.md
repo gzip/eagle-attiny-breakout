@@ -15,7 +15,7 @@ This is a flexible development board for the 8 pin family of AVR ATtiny devices.
 
 Currently available in kit form at [Tindie](https://www.tindie.com/products/gzip/avr-attiny85-development-board-kit/).
 
-<img src="https://d3s5r33r268y59.cloudfront.net/0397/products/thumbs/2014-11-21T05:46:50.707Z-product.jpg.855x570_q85_pad_rcrop.jpg" alt="Photo of circuit" width="655" height="437">
+<img src="https://img.tindie.com/images/resize/BCwxnDXR33prhZyWqrtoVbBP9C4=/p/fit-in/774x516/filters:fill(fff)/i/0397/products/2026-09-15T00:43:21.619Z-product.jpg?1789407838" alt="Photo of circuit" width="655" height="437">
 
 # License
 

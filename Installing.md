@@ -1,4 +1,4 @@
-# Toolchain & Programmer Setup Guide
+# ATtiny Programmer and Toolchain Setup Guide
 
 This guide provides step-by-step instructions for setting up programmer drivers, the build environment, and toolchains to compile and flash firmware to the ATtiny85.
 
@@ -8,7 +8,7 @@ It covers setup for both **USBtiny** (including **Little Wire**) and **USBasp** 
 
 ## 1. USB Programmer Drivers
 
-Unlike standard USB-to-serial adapters, raw USB programmers like **USBasp** and **USBtiny** communicate via raw USB vendor transfers (libusb).
+Unlike an Arduino Uno or FTDI serial adapter, USBasp and USBtiny do not create a virtual `COM` port in Windows or your IDE. Instead, `avrdude` communicates with them directly as generic USB devices via `libusb`. You do not need to figure out what COM port happened to be created and flashing commands do not require a `-P COMx` port parameter.
 
 ### Windows
 Windows does not ship with built-in drivers for USBasp or USBtiny/Little Wire. You must assign a `libusb` driver using **Zadig**:
@@ -17,12 +17,11 @@ Windows does not ship with built-in drivers for USBasp or USBtiny/Little Wire. Y
    ```powershell
    winget install akeo.ie.Zadig
    ```
-   *(Or download directly from [zadig.akeo.ie](https://zadig.akeo.ie/)).*
+   *(Or download it directly from [zadig.akeo.ie](https://zadig.akeo.ie/)).*
 2. Plug in your programmer.
 3. Open **Zadig**:
-   * Go to **Options** $\rightarrow$ check **List All Devices**.
-   * **For Little Wire / USBtiny**: Select **USBtiny**, **USBtinyISP**, or **Little Wire** (Hardware ID: `1781 0C9F`), and set the target driver (green arrow) to **`libusb-win32 (v1.2.7.3)`**.
-   * **For USBasp**: Select **USBasp** (Hardware ID: `16C0 05DC`), and set the target driver to **`libusbK`**.
+   * **For Little Wire / USBtiny**: Select **USBtiny**, **USBtinyISP**, or **Little Wire**, and set the target driver (green arrow) to **`libusb-win32`**.
+   * **For USBasp**: Select **USBasp**, and set the target driver to **`libusbK`**.
 4. Click **Install Driver** (or **Replace Driver**).
 
 ### macOS
@@ -30,7 +29,7 @@ Windows does not ship with built-in drivers for USBasp or USBtiny/Little Wire. Y
 
 ### Linux
 * **No kernel drivers required**: Linux handles both devices out of the box via `libusb`.
-* **udev rules (Permissions)**: By default, non-root users may not have permission to access raw USB devices. If `avrdude` fails with a permission error, create a udev rule:
+* **udev rules (Permissions)**: By default, non-root users may not have permission to access raw USB devices. If `avrdude` fails with a permission error, a udev rule may help, e.g. for Little Wire:
   ```bash
   sudo tee /etc/udev/rules.d/99-avr-programmers.rules << 'EOF'
   # USBasp
@@ -109,6 +108,10 @@ avrdude -c usbasp -p t85
 
 **Expected output:**
 ```text
-avrdude: AVR device initialized and ready to accept instructions
-avrdude: Device signature = 0x1e930b (probably .t85)
+Avrdude done.  Thank you.
+```
+
+USBasp programmers may also output the following message that can be ignored.
+```text
+Error: cannot set sck period; please check for usbasp firmware update
 ```
